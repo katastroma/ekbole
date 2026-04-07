@@ -6,7 +6,18 @@ option go_package = "github.com/katastroma/ekbole";
 
 // PrunerService removes cluster resources no longer in the manifest set.
 service PrunerService {
-  rpc Prune(stream PruneRequest) returns (stream PruneResponse);
+  rpc PruneStream(stream PruneStreamRequest) returns (stream PruneStreamResponse);
+  rpc Prune(stream PruneRequest) returns (PruneResponse);
+}
+
+// Provisioned Kubernetes manifest.
+message PruneStreamRequest {
+  bytes manifest = 1;
+}
+
+// Pruned Kubernetes resource.
+message PruneStreamResponse {
+  bytes manifest = 1;
 }
 
 // Provisioned Kubernetes manifest.
@@ -15,6 +26,4 @@ message PruneRequest {
 }
 
 // Pruned Kubernetes resource.
-message PruneResponse {
-  bytes manifest = 1;
-}
+message PruneResponse {}
